@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic::setContent(~{this :: content})}">
+    <th:block th:fragment="content">
+        <h1 class="mt-4">GuestBook List Page</h1>
+        <span class="row md-4 justify-content-end">
+            <a th:href="@{/guestbook/register}" class="pr-2">
+                <button type="button" class="btn btn-outline-primary">REGISTER</button>
+            </a>
+            <form id="searchForm" action="/guestbook/list" method="get">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                      <select name="type" class="custom-select pr-2">
+                        <option th:selected="${requestDTO.type == null}">------</option>
+                        <option value="t" th:selected="${requestDTO.type == 't'}">Title</option>
+                        <option value="c" th:selected="${requestDTO.type == 'c'}">Content</option>
+                        <option value="w" th:selected="${requestDTO.type == 'w'}">Writer</option>
+                        <option value="tc" th:selected="${requestDTO.type == 'tc'}">Title or Content</option>
+                        <option value="tw" th:selected="${requestDTO.type == 'tw'}">Title or Writer</option>
+                        <option value="cw" th:selected="${requestDTO.type == 'cw'}">Content or Writer</option>
+                        <option value="tcw" th:selected="${requestDTO.type == 'tcw'}">Title or Content or Writer</option>
+                      </select>
+
+                     <input class="form-control pr-2" type="text" name="keyword" th:value="${requestDTO.keyword}">
+                     <input type="hidden" name="page" th:value="1">
+                     <button class="btn btn-outline-secondary btn-search pr-2" type="button">Search</button>
+                     <button class="btn btn-outline-secondary btn-clear pr-2" type="button">Clear</button>
+                    </div>
+                </div>
+            </form>
+        </span>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Gno</th>
+                <th scope="col">Title</th>
+                <th scope="col">Writer</th>
+                <th scope="col">regDate</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="dto,status : ${result.dtoList}">
+                    <th scope="row"><a th:href="@{/guestbook/read(gno=${dto.gno}, page=${result.page},type=${requestDTO.type}, keyword=${requestDTO.keyword})}">[[${dto.gno}]]</a></th>
+                    <td>[[${dto.title}]]</td>
+                    <td>[[${dto.writer}]]</td>
+                    <td>[[${#temporals.format(dto.regDate, 'yyyy/MM/dd')}]]</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <ul class="pagination justify-content-end" style="margin:20px 0">
+                <th:block th:if="${result.prev}">
+                    <li class="page-item"><a class="page-link" th:href="@{/guestbook/list(page=${result.start -1},type=${requestDTO.type}, keyword=${requestDTO.keyword})}" tabindex="-1">Previous</a></li>
+                </th:block>
+
+                <th:block th:each="page : ${result.pageList}">
+                    <li th:class="  'page-item ' + ${result.page == page?'active':''} "><a class="page-link" th:href="@{/guestbook/list(page=${page},type=${requestDTO.type}, keyword=${requestDTO.keyword})}">[[${page}]]</a></li>
+                </th:block>
+
+                <th:block th:if="${result.next}">
+                    <li class="page-item"><a class="page-link" th:href="@{/guestbook/list(page=${result.end + 1},type=${requestDTO.type}, keyword=${requestDTO.keyword})}">Next</a></li>
+                </th:block>
+            </ul>
+        </div>
+
+        <!--    Model Start   -->
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Register GuestBook</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>[[${msg}]]가 처리되었습니다.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" >Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script th:inline="javascript">
+            const msg = [[${msg}]]
+            if(msg) {
+                $(".modal").modal();
+            };
+
+            const searchForm = $('#searchForm');
+
+            $('.btn-search').on('click', function(e){
+                searchForm.submit();
+            });
+
+            $('.btn-clear').on('click', function(e){
+                searchForm.empty().submit();
+            })
+
+        </script>
+
+    </th:block>
+</th:block>
+
+</html>
