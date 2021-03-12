@@ -29,12 +29,51 @@
         </form>
             <button type="button" class="btn btn-secondary modifyBtn">Modify</button>
             <button type="button" class="btn btn-primary listBtn">List</button>
+            <div>
+                <div class="mt-4">
+                    <h5><span class="badge badge-secondary replyCount">Reply Count[[${boardDTO.replyCount}]]</span></h5>
+                </div>
+                <div>
+                    <h5><span class="badge badge-info addReply">Add Reply</span></h5>
+                </div>
+                <div class="list-group replyList">
 
+                </div>
+            </div>
+
+            <!--    Modal Start    -->
+            <div class="modal" tabindex="-1" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="replyText" placeholder="Reply Text...">
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" type="text" name="replyer" placeholder="Replyer">
+                                <input type="hidden" name="rno">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger replyRemove">Remove</button>
+                            <button type="button" class="btn btn-warning replyModify">Modify</button>
+                            <button type="button" class="btn btn-primary replySave">Save</button>
+                            <button type="button" class="btn btn-outline-secondary replyClose" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </th:block>
 </th:block>
 
 <script th:inline="javascript">
-
+$(document).ready(function(){
     const form = $('form');
     const bno = $('input[name="bno"]');
     const page = $('input[name="page"]');
@@ -58,5 +97,133 @@
         form.append(page, type, keyword);
         form.submit();
     })
+
+    $('.replyCount').on('click', function(){
+        loadJSONData();
+    })
+
+    const modal = $('.modal');
+
+    $('.addReply').on('click', function(){
+
+        modal.modal('show');
+        $('input[name="replyText"]').val('');
+        $('input[name="replyer"]').val('');
+
+        $('.modal-footer .btn').hide();
+        $('.replySave, .replyClose').show();
+    })
+
+    $('.replySave').on('click', function(e){
+
+        const reply = {
+            text:$('input[name="replyText"]').val(),
+            replyer:$('input[name="replyer"]').val(),
+            bno:bno.val()
+        }
+
+        $.ajax({
+            url:'/replies/',
+            type:'post',
+            data:JSON.stringify(reply),
+            contentType:'application/json; charset=utf-8',
+            dataType:'json',
+            success: function(data, status){
+                const newRno = parseInt(data);
+
+                alert(newRno + "댓글이 입력되었습니다.");
+                modal.modal('hide');
+                loadJSONData();
+            }
+        })
+    })
+
+    $('.replyList').on('click','.card-body', function(e){
+        const rno = $(this).data('rno');
+        const replyText = $(this).find('.card-title').html();
+        const replyer = $(this).find('.card-subtitle').html();
+
+        $('input[name="replyText"]').val(replyText);
+        $('input[name="replyer"]').val(replyer);
+        $('input[name="rno"]').val(rno);
+
+        $('.modal-footer .btn').hide();
+        $('.replyModify, .replyRemove, .replyClose').show();
+
+        modal.modal('show');
+    })
+
+    $('.replyRemove').on('click', function(e){
+        const rno = $('input[name="rno"]').val();
+        $.ajax({
+            url:'/replies/' + rno,
+            type:'delete',
+            dataType:'json',
+            success: function(result, status){
+
+                if(result === 'success'){
+                    alert("댓글이 삭제되었습니다.");
+                    modal.modal('hide');
+                    loadJSONData();
+                }
+            }
+        })
+    })
+
+
+    $('.replyModify').on('click', function(e){
+
+        const reply = {
+            rno:$('input[name="rno"]').val(),
+            text:$('input[name="replyText"]').val(),
+            replyer:$('input[name="replyer"]').val(),
+            bno:bno.val()
+        }
+
+        $.ajax({
+            url:'/replies/',
+            data:JSON.stringify(reply),
+            method:'put',
+            contentType:'application/json; charset=utf-8',
+            success:function(result, status){
+                console.log("result:"+result+", status:"+status);
+                if(result === 'success'){
+                    alert('댓글이 수정되었습니다.');
+                    modal.modal('hide');
+                    loadJSONData();
+                }
+            }
+        })
+    })
+
+    function formatTime(str){
+        let date = new Date(str);
+
+        return date.getFullYear()+ "/" +
+            (date.getMonth()+1) + "/" +
+            date.getDate() + " " +
+            date.getHours() + ":" +
+            date.getMinutes();
+    }
+
+    function loadJSONData(){
+        const $listGroup = $('.replyList');
+        $listGroup.empty();
+
+        $.getJSON( '/replies/board/'+bno.val(), function(result){
+
+            $('.replyCount').html(" Reply Count " + result.length);
+            $.each(result, (idx,reply)=>{
+                const $container = $('<div/>', {'class':'card-body', 'data-rno':reply.rno}).html('<b>'+reply.rno+'</b>');
+                const $text = $('<h5/>',{'class':'card-title'}).text(reply.text);
+                const $replyer = $('<h6/>', {'class':'card-subtitle mb-3 text-muted'}).text(reply.replyer);
+                const $regDate = $('<p/>',{'class':'card-text'}).text(formatTime(reply.regDate));
+
+                $container.append($text, $replyer, $regDate);
+                $listGroup.append($container);
+            })
+        });
+    }
+})
 </script>
 </html>
