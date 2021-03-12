@@ -1,8 +1,7 @@
-package com.example.ex03.guestbook.repository;
+package com.example.ex03.repository;
 
 import com.example.ex03.entity.Guestbook;
 import com.example.ex03.entity.QGuestbook;
-import com.example.ex03.repository.GuestbookRepository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import org.junit.jupiter.api.Test;

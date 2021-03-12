@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="~{/layout/basic :: setContent(~{this :: content})}">
+
+    <th:block th:fragment="content">
+        <input type="hidden" name="bno" th:value="${boardDTO.bno}"/>
+        <input type="hidden" name="page" th:value="${requestDTO.page}"/>
+        <input type="hidden" name="type" th:value="${requestDTO.type}"/>
+        <input type="hidden" name="keyword" th:value="${requestDTO.keyword}"/>
+
+        <h1 class="mt-4">GuestBook Register Page</h1>
+
+        <form>
+            <div class="form-group">
+                <label>Title</label>
+                <input type="text" class="form-control" name="title" th:value="${boardDTO.title}" placeholder="Enter Title" readonly>
+            </div>
+
+            <div class="form-group">
+                <label>Content</label>
+                <textarea class="form-control" name="content" rows="5" readonly>[[${boardDTO.content}]]</textarea>
+            </div>
+
+            <div class="form-group">
+                <label>writer</label>
+                <input type="text" class="form-control" name="writerEmail" th:value="${boardDTO.writerEmail}" placeholder="Enter Writer" readonly>
+            </div>
+
+        </form>
+            <button type="button" class="btn btn-secondary modifyBtn">Modify</button>
+            <button type="button" class="btn btn-primary listBtn">List</button>
+
+    </th:block>
+</th:block>
+
+<script th:inline="javascript">
+
+    const form = $('form');
+    const bno = $('input[name="bno"]');
+    const page = $('input[name="page"]');
+    const type = $('input[name="type"]');
+    const keyword = $('input[name="keyword"]');
+
+    $('.modifyBtn').on('click', function(e){
+
+        form.attr('action','/board/modify');
+        form.attr('method','get');
+        form.empty();
+        form.append(bno, page, type, keyword);
+        form.submit();
+    })
+
+    $('.listBtn').on('click', function(e){
+
+        form.attr('action','/board/list');
+        form.attr('method','get');
+        form.empty();
+        form.append(page, type, keyword);
+        form.submit();
+    })
+</script>
+</html>

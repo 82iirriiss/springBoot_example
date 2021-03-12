@@ -1,10 +1,9 @@
-package com.example.ex03.guestbook.service;
+package com.example.ex03.service;
 
 import com.example.ex03.dto.GuestbookDTO;
 import com.example.ex03.dto.PageRequestDTO;
 import com.example.ex03.dto.PageResultDTO;
 import com.example.ex03.entity.Guestbook;
-import com.example.ex03.service.GuestbookService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
