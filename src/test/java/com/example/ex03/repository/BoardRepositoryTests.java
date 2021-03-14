@@ -1,7 +1,8 @@
 package com.example.ex03.repository;
 
-import com.example.ex03.entity.Board;
-import com.example.ex03.entity.Member;
+import com.example.ex03.board.entity.Board;
+import com.example.ex03.board.entity.Member;
+import com.example.ex03.board.repository.BoardRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -64,7 +65,7 @@ public class BoardRepositoryTests {
 
     @Test
     public void testReadWithReply(){
-        List<Object[]> result = (List<Object[]>) boardRepository.getBoardWithReply(100L);
+        List<Object[]> result = boardRepository.getBoardWithReply(100L);
 
         for(Object[] arr : result){
             System.out.println(Arrays.toString(arr));
@@ -77,7 +78,7 @@ public class BoardRepositoryTests {
         Pageable pageable = PageRequest.of(1,10, Sort.by("bno").descending());
         Page<Object[]> result = boardRepository.getBoardWithReplyCount(pageable);
         result.get().forEach(boards -> {
-            Object[] arr = (Object[]) boards;
+            Object[] arr = boards;
             System.out.println(Arrays.toString(arr));
         });
     }

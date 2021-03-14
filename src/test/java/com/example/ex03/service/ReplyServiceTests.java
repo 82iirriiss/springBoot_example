@@ -1,7 +1,7 @@
 package com.example.ex03.service;
 
-import com.example.ex03.dto.ReplyDTO;
-import com.example.ex03.repository.ReplyRepository;
+import com.example.ex03.board.dto.ReplyDTO;
+import com.example.ex03.board.service.ReplyService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

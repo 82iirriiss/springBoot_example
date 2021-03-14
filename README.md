@@ -59,3 +59,7 @@ compileQuerydsl{
 
 - 설정 후, compileQuerydsl(설정의 마지막 부분) 왼쪽의 ▶ 을 클릭하여, Task를 실행한다.
 - 프로젝트의 'build>generated>querydsl' 하위에 엔티티이름에 Q 가 붙은 클래스들이 생성될 것 이다.
+
+### 엔티티 설계
+- regDate나 modDate 컬럼의 경우, 코딩하지 않아도 자동으로 입력되도록 설계한 <font color="yellow">BaseEntity</font>를 모든 엔티티에서 상속한다.
+- Querydsl과 JPQL을 사용하는 검색/정렬 처리는 xxxsearchRepository, xxxsearchRepositoryImpl 을 생성하여 ***Repository에서 상속한다.

@@ -1,6 +1,7 @@
 package com.example.ex03.repository;
 
-import com.example.ex03.entity.Member;
+import com.example.ex03.board.entity.Member;
+import com.example.ex03.board.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

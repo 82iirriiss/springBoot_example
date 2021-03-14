@@ -1,10 +1,9 @@
 package com.example.ex03.service;
 
-import com.example.ex03.dto.BoardDTO;
-import com.example.ex03.dto.PageRequestDTO;
-import com.example.ex03.dto.PageResultDTO;
-import com.example.ex03.entity.Board;
-import com.example.ex03.repository.BoardRepository;
+import com.example.ex03.board.dto.BoardDTO;
+import com.example.ex03.board.service.BoardService;
+import com.example.ex03.common.dto.PageRequestDTO;
+import com.example.ex03.common.dto.PageResultDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
