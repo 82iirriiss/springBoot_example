@@ -8,7 +8,10 @@ import com.example.ex03.movie.repository.ReviewRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Commit;
 
+import javax.transaction.Transactional;
+import java.util.List;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -16,6 +19,9 @@ public class ReviewRepositoryTest {
 
     @Autowired
     private ReviewRepository repository;
+
+    @Autowired
+    private MovieMemberRepository memberRepository;
 
     @Test
     public void insertReviews(){
@@ -33,5 +39,25 @@ public class ReviewRepositoryTest {
                                     .movieMember(member).build();
             repository.save(review);
         });
+    }
+
+    @Test
+    public void testFindByMovie(){
+        List<Review> result = repository.findByMovie(Movie.builder().mno(95L).build());
+
+        result.stream().forEach(review ->{
+            System.out.println(review.getReviewnum());
+            System.out.println(review.getMovieMember().toString());
+            System.out.println(review.getGrade());
+            System.out.println(review.getText());
+        });
+    }
+
+    @Transactional
+    @Commit
+    @Test
+    public void testDeleteByMember(){
+        repository.deleteByMovieMember(MovieMember.builder().mid(1L).build());
+        memberRepository.deleteById(1L);
     }
 }
