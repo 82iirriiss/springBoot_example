@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -29,14 +26,19 @@ public class MovieController {
     @PostMapping("/register")
     public String registerPost(MovieDTO dto, RedirectAttributes attr){
         Long mno = service.register(dto);
-        attr.addFlashAttribute("mno", mno);
+        attr.addFlashAttribute("msg", mno);
         return "redirect:/movie/list";
     }
 
     @GetMapping("/list")
     public void getList(PageRequestDTO requestDTO, Model model){
         log.info("pageRequestDTO:" + requestDTO);
-//        model.addAttribute("msg", mno);
         model.addAttribute("result", service.getList(requestDTO));
+    }
+
+    @GetMapping({"/read", "/modify"})
+    public void read(Long mno, @ModelAttribute("requestDTO") PageRequestDTO pageRequestDTO, Model model){
+        MovieDTO movieDTO = service.getMovie(mno);
+        model.addAttribute("dto", movieDTO);
     }
 }

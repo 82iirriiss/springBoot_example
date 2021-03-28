@@ -60,4 +60,19 @@ public class ReviewRepositoryTest {
         repository.deleteByMovieMember(MovieMember.builder().mid(1L).build());
         memberRepository.deleteById(1L);
     }
+
+    @Test
+    public void insertReview(){
+
+            MovieMember member = MovieMember.builder().mid(2L).build();
+            Movie movie = Movie.builder().mno(102L).build();
+            Review review = Review.builder()
+                    .grade(5)
+                    .text("test......")
+                    .movie(movie)
+                    .movieMember(member).build();
+            Review result = repository.save(review);
+            System.out.println("result:" + result.getReviewnum());
+    };
+
 }

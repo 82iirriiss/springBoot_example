@@ -19,6 +19,8 @@ public interface MovieService {
 
     PageResultDTO<MovieDTO, Object[]> getList(PageRequestDTO requestDTO);
 
+    MovieDTO getMovie(Long mno);
+
     default Map<String, Object> dtoToEntity(MovieDTO dto){
 
         Movie movie = Movie.builder().title(dto.getTitle()).build();
