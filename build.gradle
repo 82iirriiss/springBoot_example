@@ -35,6 +35,10 @@ dependencies {
     implementation group: 'com.querydsl', name: 'querydsl-jpa', version: '4.3.1'
     // https://mvnrepository.com/artifact/net.coobird/thumbnailator
     implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.12'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.3'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-thymeleaf', version: '2.4.3'
 
 
 }
