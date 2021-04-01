@@ -2,7 +2,9 @@ package com.example.ex03.sample.controller;
 
 
 import com.example.ex03.sample.dto.SampleDTO;
+import com.example.ex03.security.dto.ClubAuthMemeberDTO;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -65,5 +67,12 @@ public class SampleController {
     @GetMapping({"/exLayout1", "/exLayout2", "/exTemplate","/exSidebar"})
     public void exLayout1(){
         log.info("exLayout.......");
+    }
+
+    @GetMapping("/member")
+    public void exMember(@AuthenticationPrincipal ClubAuthMemeberDTO clubAuthMemeberDTO){
+        log.info("exMember.................");
+        log.info("--------------------------");
+        log.info(clubAuthMemeberDTO);
     }
 }

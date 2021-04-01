@@ -43,13 +43,15 @@ public class ClubUserDetailService implements UserDetailsService {
         ClubAuthMemeberDTO clubAuthMemeberDTO = new ClubAuthMemeberDTO(
                 clubMember.getEmail(),
                 clubMember.getPassword(),
+                clubMember.getName(),
+                clubMember.isFromSocial(),
                 clubMember.getRoleSet().stream()
                                         .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
                                         .collect(Collectors.toSet())
         );
 
-        clubAuthMemeberDTO.setEmail(clubMember.getEmail());
-        clubAuthMemeberDTO.setFromSocial(clubMember.isFromSocial());
+//        clubAuthMemeberDTO.setEmail(clubMember.getEmail());
+//        clubAuthMemeberDTO.setFromSocial(clubMember.isFromSocial());
 
         return clubAuthMemeberDTO;
     }

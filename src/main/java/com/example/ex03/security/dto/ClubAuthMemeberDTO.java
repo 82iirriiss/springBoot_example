@@ -25,10 +25,11 @@ public class ClubAuthMemeberDTO extends User {
 
     private boolean fromSocial;
 
-    public ClubAuthMemeberDTO(String username, String password, boolean fromSocial, Collection<? extends GrantedAuthority> authorities){
+    public ClubAuthMemeberDTO(String username, String password, String name, boolean fromSocial, Collection<? extends GrantedAuthority> authorities){
         super(username, password, authorities);
         this.email = username; //id와 같은 역할.
         this.fromSocial = fromSocial;
+        this.name = name;
 
     }
 }

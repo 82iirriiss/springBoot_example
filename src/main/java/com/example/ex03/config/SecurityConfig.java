@@ -5,10 +5,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+@EnableWebSecurity
 @Configuration
 @Log4j2
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -34,6 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/guestbook/list").permitAll()
                 .antMatchers("/movie/list").hasRole("USER");
+
         //인증/인가 실패 시, 로그인 화면 보여주기
         //그밖에 사용자 설정을 위한 loginPage(), loginProcessUrl(), defaultSuccessUrl(), failureUrl() 등이 존재함
         http.formLogin();
@@ -45,5 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 사용자가 별도의 로그아웃 설정을 추가할 수 있도록, logoutUrl(), logoutSuccessUrl() 함수 제공.
         // 로그아웃 시, 세션무효화와 쿠키에서 세션의 삭제를 위해 invalidatedHttpSession()과 deleteCookies()를 제공.
         http.logout();
+
+        http.csrf().disable();
+
+        http.oauth2Login();
     }
 }
