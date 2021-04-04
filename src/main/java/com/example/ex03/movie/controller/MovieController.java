@@ -6,12 +6,14 @@ import com.example.ex03.movie.dto.MovieDTO;
 import com.example.ex03.movie.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@PreAuthorize("hasRole('ADMIN')")
 @RequestMapping("/movie")
 @Log4j2
 @RequiredArgsConstructor

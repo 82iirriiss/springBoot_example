@@ -4,6 +4,7 @@ package com.example.ex03.sample.controller;
 import com.example.ex03.sample.dto.SampleDTO;
 import com.example.ex03.security.dto.ClubAuthMemeberDTO;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,6 +70,9 @@ public class SampleController {
         log.info("exLayout.......");
     }
 
+
+    // 권한이 있는 사용자더라도, 특정 사용자인 user95@example.com 만, 이 컨트롤러에 접근 할 수 있다는 의미.
+    @PreAuthorize("#clubAuthMemeberDTO != null && #clubAuthMemeberDTO.username eq \"user95@example.com\"")
     @GetMapping("/member")
     public void exMember(@AuthenticationPrincipal ClubAuthMemeberDTO clubAuthMemeberDTO){
         log.info("exMember.................");
