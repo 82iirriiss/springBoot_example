@@ -63,3 +63,16 @@ compileQuerydsl{
 ### 엔티티 설계
 - regDate나 modDate 컬럼의 경우, 코딩하지 않아도 자동으로 입력되도록 설계한 <font color="yellow">BaseEntity</font>를 모든 엔티티에서 상속한다.
 - Querydsl과 JPQL을 사용하는 검색/정렬 처리는 xxxsearchRepository, xxxsearchRepositoryImpl 을 생성하여 ***Repository에서 상속한다.
+ 
+### Security 구성
+1. 인증을 위해 'AuthenticationManager'가 작업을 하는데, 실제로는 UsernamePasswordAuthenticationToken과 같이 토큰이라는 객체로 만들어서 전달한다.
+2. 실제 인증을 위한 데이터를 가져오는 AuthenticationProvider는, 내부적으로 UserDetailsService 객체를 이용한다.
+3. UserDetails 인터페이스
+    - getAuthorities() : 사용자가 가지는 권한에 대한 정보
+    - getPassword() : 인증을 마무리하기 위한 패스워드 정보
+    - getUsername() : 인증에 필요한 아이디
+    - 계정만료여부
+    - 계정 잠김 여부
+* 스프링 시큐리티는 회원/계정에 대해서, User 라는 명칭을 사용하므로, 오해 없도록 한다.
+* 회원아이디라는 용어대신 username 이라는 용서를 사용하는데, 이를 아이디와 동일시 하면 된다.
+* username과 password를 동시에 사용하지 않는다. username으로 존재유무를 먼저 가져오고, 이후에 password가 틀리면, 'Bad Cridential' 결과를 생성한다.

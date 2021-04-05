@@ -17,7 +17,9 @@ import java.util.Map;
 @ToString
 public class ClubAuthMemeberDTO extends User implements OAuth2User {
 
-    public ClubAuthMemeberDTO(String username, String password, Collection<? extends GrantedAuthority> authorities) {
+    public ClubAuthMemeberDTO(String username,
+                              String password,
+                              Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
     }
 
@@ -25,7 +27,7 @@ public class ClubAuthMemeberDTO extends User implements OAuth2User {
 
     private String name;
 
-    private String password;
+//    private String password;
 
     private boolean fromSocial;
 
@@ -49,7 +51,7 @@ public class ClubAuthMemeberDTO extends User implements OAuth2User {
                               Collection<? extends GrantedAuthority> authorities){
         super(username, password, authorities);
         this.email = username; //id와 같은 역할.
-        this.password = password;
+//        this.password = password;
         this.fromSocial = fromSocial;
     }
 

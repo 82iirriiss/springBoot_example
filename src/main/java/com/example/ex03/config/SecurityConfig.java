@@ -1,12 +1,13 @@
 package com.example.ex03.config;
 
 import com.example.ex03.security.filter.ApiCheckFilter;
+import com.example.ex03.security.filter.ApiLoginFailHandler;
 import com.example.ex03.security.filter.ApiLoginFilter;
 import com.example.ex03.security.handler.ClubLoginSuccessHandler;
+import com.example.ex03.security.util.JWTUtil;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -48,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //인증/인가 실패 시, 로그인 화면 보여주기
         //그밖에 사용자 설정을 위한 loginPage(), loginProcessUrl(), defaultSuccessUrl(), failureUrl() 등이 존재함
-        http.formLogin();
+        http.formLogin().defaultSuccessUrl("/");
 
         //csrf 비활성화 : 외부에서 REST 방식을 이용할 수 있게 하는 경우,
         http.csrf().disable();
@@ -72,17 +73,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new ClubLoginSuccessHandler(passwordEncoder());
     }
 
+
     @Bean
     public ApiLoginFilter apiLoginFilter() throws Exception{
         // /api/login 경로로 요청시에만 동작하는 필터.
-        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login");
+        ApiLoginFilter apiLoginFilter = new ApiLoginFilter("/api/login", jwtUtil());
         apiLoginFilter.setAuthenticationManager(authenticationManager());
-
+        apiLoginFilter.setAuthenticationFailureHandler(new ApiLoginFailHandler());
         return apiLoginFilter;
     }
 
     @Bean
     public ApiCheckFilter apiCheckFilter(){
-        return new ApiCheckFilter("/notes/*");
+        return new ApiCheckFilter("/notes/*", jwtUtil());
+    }
+
+    @Bean
+    public JWTUtil jwtUtil(){
+        return new JWTUtil();
     }
 }
