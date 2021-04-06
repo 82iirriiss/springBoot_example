@@ -28,7 +28,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //1. PasswordEncoder 객체 생성
     //2. Authentication Manager 설정 : configure()
     @Bean
-    PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder(){
+
         return new BCryptPasswordEncoder();
     }
 

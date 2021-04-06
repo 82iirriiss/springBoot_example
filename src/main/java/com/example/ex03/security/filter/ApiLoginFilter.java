@@ -58,12 +58,13 @@ public class ApiLoginFilter extends AbstractAuthenticationProcessingFilter {
         String token = null;
         try{
             token = jwtUtil.generateToken(email);
-
+            // 로그인 성공 시, JWT 토큰을 발행함.
             response.setContentType(("text/plain"));
             response.getOutputStream().write(token.getBytes());
 
             log.info(token);
-
+            // http://localhost:8080/api/login?email=user90@example.com&pw=1111
+            // eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2MTc3MTM2ODcsImV4cCI6MTYyMDMwNTY4Nywic3ViIjoidXNlcjkwQGV4YW1wbGUuY29tIn0.L9S42VkwCLSjIqygPZ7a6yzMbnHWGn1vWdweVsuqgcA
         } catch (Exception e) {
             e.printStackTrace();
         }

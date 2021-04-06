@@ -18,6 +18,7 @@ public class JWTUtil {
     //1month
     private long expire = 60 * 24 * 30;
 
+//    JWT 토큰 생성 : 암호화 알고리즘 + 키를 이용한 signature + 키/값 쌍으로 이루어진 payload('sub':email)
     public String generateToken(String content) throws Exception{
 
         return Jwts.builder()
@@ -28,6 +29,7 @@ public class JWTUtil {
                 .compact();
     }
 
+//    JWT 문자열을 검증하는 역할. payload에 입력한 값을 확인할 수 있다.
     public String validateAndExtract(String tokenStr)throws Exception{
         String contentValue = null;
 
