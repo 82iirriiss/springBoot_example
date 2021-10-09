@@ -11,6 +11,7 @@ import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 @MappedSuperclass
+// 활성화 하기 위해서는, Application.java에 @EnableJpaAuditing 을 붙여줘야 한다.
 @EntityListeners(value = AuditingEntityListener.class)
 @Getter
 public abstract class BaseEntity {
